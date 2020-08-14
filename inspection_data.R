@@ -32,7 +32,7 @@ library(readODS)   # Read .ods Files
 
 inspec1617 <- read_ods('data/inspection/2016-2017_Inspection_Table.ods', 
                       skip = 1, col_names = T)
-inspec18 <- read_ods('DADOS_INSPECAO/2018_Inspection_Table.ods')
+inspec18 <- read_ods('data/inspection/2018_Inspection_Table.ods')
 
 ##----------------------------------------------------------------
 
