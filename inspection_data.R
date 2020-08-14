@@ -42,7 +42,8 @@ inspec18 <- read_ods('data/inspection/2018_Inspection_Table.ods')
 ###  The data file for the years 2016/17 has several apiaries, 
 ###  however, we will restrict ourselves to apiaries BBCC, Juniper, 
 ###  Beesboro, TBH and Lakeview. After, we select the variables 
-###  of interest for modeling.
+###  of interest for modeling and in the end we restrict the 
+###  inspection variables to be binary (0 or 1).
 
 inspec1617 <- inspec1617 %>%
   filter(((ApiaryID == "BBCC") & (`Hive ID / Hive Tag ID` %in% c("HT102", "HT103", "HT105", "HT106", "HT107", "HT109"))) |
@@ -59,7 +60,9 @@ inspec1617 <- inspec1617 %>%
             Queen = `C3-Young Laying Queen Present (1=Y, 0=N)`,
             Food = `C4-Adequate Forage & Stores (1=Y, 0=N)`,
             Stressors = as.numeric(`C5-No Apparent Stressors Impacting Colony (1=Y, 0=N)`),
-            Space = `C6-Hive Space Appropriate for Colony Size & Expected Needs (1=Y, 0=N)`) 
+            Space = `C6-Hive Space Appropriate for Colony Size & Expected Needs (1=Y, 0=N)`) %>%
+  filter(Brood %in% c(0, 1), Bees %in% c(0, 1), Queen %in% c(0, 1), Food %in% c(0, 1),
+         Stressors %in% c(0, 1), Space %in% c(0, 1))
 
 ##----------------------------------------------------------------
 
@@ -67,7 +70,8 @@ inspec1617 <- inspec1617 %>%
 ###  we will restrict ourselves to apiaries BBCC, Juniper, Beesboro, 
 ###  TBH and Lakeview. Some of these apiaries doesn't have the correct 
 ###  default name so we'll fix that. Afterwards, we select the variables 
-###  of interest for the modeling.
+###  of interest for the modeling and in the end we restrict the 
+###  inspection variables to be binary (0 or 1).
 
 inspec18 <- inspec18 %>%
   filter(((Apiary == "BBCC-RTP") & (HiveTag_ID %in% c("102", "103", "105", "106", "107", "109"))) |
@@ -75,7 +79,7 @@ inspec18 <- inspec18 %>%
            ((Apiary == "Beesboro") & (HiveTag_ID %in% c("110", "211", "216", "219", "222", "223", "236", "242"))) |
            ((Apiary == "BBTS") & (HiveTag_ID %in% c("628", "869"))) |
            ((Apiary == "The Bee Hive") & (HiveTag_ID %in% c("1", "2", "3", "4"))) |
-           ((Apiary == "Lakeview") & (HiveTag_ID %in% c("11", "4", "5"))) ) %>%
+           ((Apiary == "Lakeview") & (HiveTag_ID %in% c("11", "4", "5")))) %>%
   mutate(Date = InsptDate,
          Apiary = if_else(Apiary == 'BBCC-RTP', 'BBCC', Apiary), 
          Hive = if_else(Apiary %in% c('BBCC', 'Juniper Level', 'Beesboro'), 
@@ -83,7 +87,9 @@ inspec18 <- inspec18 %>%
                         if_else(Apiary %in% c('BBTS', 'Lakeview'), 
                                 paste0('H', HiveTag_ID),
                                 paste0('H0', HiveTag_ID)))) %>%
-  select(Date, Apiary, Hive, Brood, Bees, Queen, Food, Stressors, Space)
+  select(Date, Apiary, Hive, Brood, Bees, Queen, Food, Stressors, Space) %>%
+  filter(Brood %in% c(0, 1), Bees %in% c(0, 1), Queen %in% c(0, 1), Food %in% c(0, 1),
+         Stressors %in% c(0, 1), Space %in% c(0, 1))
 
 
 ##----------------------------------------------------------------
