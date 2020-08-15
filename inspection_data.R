@@ -8,9 +8,9 @@
 ############################################################################
 
 
-###  This .R archive makes a load of the two files in ./files 
-###  and preprocess the hive and apiary for get the data final 
-###  of inspections.                
+###  This .R file loads two files in ./files and does a series 
+###  of pre-processing including the hive and the apiary to obtain 
+###  the final data of inspections.             
 
 
 ##---------------------------------------------------------------
@@ -23,7 +23,7 @@ library(lubridate) # Date Manipulation
 
 
 ##---------------------------------------------------------------
-##                        Load data sets                        --
+##                        Load data sets                       --
 ##---------------------------------------------------------------
 
 ###  The inspection files are obtained through 2 spreadsheets in 
