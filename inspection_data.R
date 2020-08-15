@@ -19,6 +19,7 @@
 
 library(tidyverse) # Data Manipulation
 library(readODS)   # Read .ods Files
+library(lubridate) # Date Manipulation
 
 
 ##---------------------------------------------------------------
@@ -52,7 +53,7 @@ inspec1617 <- inspec1617 %>%
            ((ApiaryID == "BBTS") & (`Hive ID / Hive Tag ID` %in% c("H628", "H869"))) |
            ((ApiaryID == "The Bee Hive") & (`Hive ID / Hive Tag ID` %in% c("H01", "H02", "H03", "H04"))) |
            ((ApiaryID == "Lakeview, UT") & (`Hive ID / Hive Tag ID` %in% c("H11", "H4", "H5")))) %>%
-  transmute(Date = `Date (m/d/y)`,
+  transmute(Date = dmy(`Date (m/d/y)`),  # Convert to Date
             Apiary = if_else(ApiaryID == 'Lakeview, UT', 'Lakeview', ApiaryID), 
             Hive = `Hive ID / Hive Tag ID`, 
             Brood = `C1-All Stages Brood Present (1=Y, 0=N)`,
@@ -80,7 +81,7 @@ inspec18 <- inspec18 %>%
            ((Apiary == "BBTS") & (HiveTag_ID %in% c("628", "869"))) |
            ((Apiary == "The Bee Hive") & (HiveTag_ID %in% c("1", "2", "3", "4"))) |
            ((Apiary == "Lakeview") & (HiveTag_ID %in% c("11", "4", "5")))) %>%
-  mutate(Date = InsptDate,
+  mutate(Date = mdy(InsptDate),  # Convert to Date
          Apiary = if_else(Apiary == 'BBCC-RTP', 'BBCC', Apiary), 
          Hive = if_else(Apiary %in% c('BBCC', 'Juniper Level', 'Beesboro'), 
                         paste0('HT', HiveTag_ID ),
@@ -105,8 +106,8 @@ inspec <- bind_rows(inspec1617, inspec18)
 ##                    Export to a .csv file                    --
 ##---------------------------------------------------------------
 
-write_csv(inspec, 'inspection.csv')
+write_csv(inspec, './data/inspection.csv')
+
 
 ############################################################################
 ############################################################################
-
