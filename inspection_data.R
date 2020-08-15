@@ -97,9 +97,40 @@ inspec18 <- inspec18 %>%
 ##                      Combine data sets                      --
 ##---------------------------------------------------------------
 
-### Let's concatenate the two data sets one below the other
+###  Let's concatenate the two data sets one below the other
 
 inspec <- bind_rows(inspec1617, inspec18)
+
+
+##----------------------------------------------------------------
+##                     Add geolocation data                     --
+##----------------------------------------------------------------
+
+###  We will incorporate the coordinates of each apiary into the 
+###  data set, this information can be found in the work of 
+###  Rafael et.al (2020).
+
+loc_apiary <- c(35.920, -78.850,  # BBCC
+                40.500, -79.870,  # BBTS
+                35.640, -78.430,  # Beesboro
+                35.700, -78.550,  # Juniper Level
+                40.700, -111.820, # Lakeview
+                40.800, -85.550)  # The Bee Hive
+
+inspec <- inspec %>%
+  mutate(latitude = case_when(Apiary == 'BBCC' ~ loc_apiary[1],
+                              Apiary == 'BBTS' ~ loc_apiary[3],
+                              Apiary == 'Beesboro' ~ loc_apiary[5],
+                              Apiary == 'Juniper Level' ~ loc_apiary[7],
+                              Apiary == 'Lakeview' ~ loc_apiary[9],
+                              Apiary == 'The Bee Hive' ~ loc_apiary[11]),
+         longitude = case_when(Apiary == 'BBCC' ~ loc_apiary[2],
+                               Apiary == 'BBTS' ~ loc_apiary[4],
+                               Apiary == 'Beesboro' ~ loc_apiary[6],
+                               Apiary == 'Juniper Level' ~ loc_apiary[8],
+                               Apiary == 'Lakeview' ~ loc_apiary[10],
+                               Apiary == 'The Bee Hive' ~ loc_apiary[12]),
+         .after = Hive)
 
 
 ##---------------------------------------------------------------
