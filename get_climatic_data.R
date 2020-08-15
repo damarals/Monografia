@@ -26,6 +26,14 @@ library(rjson)     # JSON Manipulation
 ##                        Core Function                        --
 ##---------------------------------------------------------------
 
+###  In this section, two functions are defined, the first visit 
+###  to the wordweatheronline API and returns a raw list containing 
+###  hourly weather data for a certain date and location (latitude 
+###  and longitude). The second function takes this raw list and 
+###  returns a dataframe with the minimum, median and maximum for 
+###  each variable of interest.
+
+
 getClimaticData <- function(date, lat, lng) {
   
   ApiBaseURL = 'http://api.worldweatheronline.com/premium/v1/past-weather.ashx?'
@@ -37,9 +45,27 @@ getClimaticData <- function(date, lat, lng) {
                      paste0('key=', ApiKey),
                      'format=json&includelocation=yes&tp=1', sep = '&'))
 
-  getData <- GET(url = query)
+  rawData <- content(x = GET(url = query))
   
-  return(getData)
+  return(rawData)
+}
+
+getStatsDaily <- function(rawData) {
+  
+  listDaily <- lapply(rawData$data$weather[[1]]$hourly, function(lt) {
+    tibble(Temperature = lt$tempC, Windspeed = lt$windspeedKmph,
+           Precipitation = lt$precipMM, Humidity = lt$humidity,
+           Pressure = lt$pressure, Dewpoint = lt$DewPointC)
+  })
+  
+  tibbleStats <- listDaily %>% 
+    bind_rows() %>% 
+    mutate_all(.funs = funs(as.numeric(.))) %>%
+    summarize(across(everything(), 
+                     .fns = list(Min = ~min(.), Median = ~median(.), Max = ~max(.)),
+                     .names = "{fn}{col}"))
+  
+  return(tibbleStats)
 }
 
 

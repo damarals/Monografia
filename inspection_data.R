@@ -118,13 +118,13 @@ loc_apiary <- c(35.920, -78.850,  # BBCC
                 40.800, -85.550)  # The Bee Hive
 
 inspec <- inspec %>%
-  mutate(latitude = case_when(Apiary == 'BBCC' ~ loc_apiary[1],
+  mutate(Latitude = case_when(Apiary == 'BBCC' ~ loc_apiary[1],
                               Apiary == 'BBTS' ~ loc_apiary[3],
                               Apiary == 'Beesboro' ~ loc_apiary[5],
                               Apiary == 'Juniper Level' ~ loc_apiary[7],
                               Apiary == 'Lakeview' ~ loc_apiary[9],
                               Apiary == 'The Bee Hive' ~ loc_apiary[11]),
-         longitude = case_when(Apiary == 'BBCC' ~ loc_apiary[2],
+         Longitude = case_when(Apiary == 'BBCC' ~ loc_apiary[2],
                                Apiary == 'BBTS' ~ loc_apiary[4],
                                Apiary == 'Beesboro' ~ loc_apiary[6],
                                Apiary == 'Juniper Level' ~ loc_apiary[8],
