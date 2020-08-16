@@ -33,3 +33,23 @@ library(lubridate) # Date Manipulation
 
 inspections <- read_csv('./data/inspections.csv')
 sensors <- read_csv('./data/sensors.csv')
+
+
+##----------------------------------------------------------------
+##             Combine inspections and climate data             --
+##----------------------------------------------------------------
+
+###  The function below adds columns to the inspection data through 
+###  the functions of obtaining climatic data present in the file 
+###  get_climatic_data.R through the information contained in the date, 
+###  latitude and longitude columns.
+
+source('./get_climatic_data.R')  # Load Functions
+
+inspclimData <- inspections %>%
+  sample_n(2) %>%
+  do(bind_cols(., data.frame(t(getClimateStatsData(date = .$Date, 
+                                                   lat = .$Latitude, 
+                                                   lng = .$Longitude)))))
+
+
