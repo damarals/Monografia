@@ -72,9 +72,14 @@ getStatsDaily <- function(rawData) {
     mutate(StationLat = as.numeric(WeatherStation[1]), 
            StationLng = as.numeric(WeatherStation[2]))
   
-  return(tibbleStats)
+  return(unlist(tibbleStats))
 }
 
+getClimateStatsData <- Vectorize(function(date, lat, lng) {
+  raw <- getClimaticData(date, lat, lng)
+  statsData <- getStatsDaily(raw)
+  return(statsData)
+})
 
 ############################################################################
 ############################################################################
