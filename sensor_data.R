@@ -28,7 +28,7 @@ library(lubridate) # Date Manipulation
 ###  The code below lists all files in the ./data/sensors directory 
 ###  and reads them. Then, all files read are attached.
 
-setwd('./data/sensor')
+setwd('./data/raw_sensors')
 fileList <- list.files(pattern = "*.csv", recursive = T)
 
 for (file in fileList){
@@ -74,10 +74,8 @@ sensors <- sensors %>%
 ##                    Export to a .csv file                    --
 ##---------------------------------------------------------------
 
-write_csv(sensors, './data/sensor.csv')
+write_csv(sensors, '../sensors.csv')
 
 
-############################################################################
-############################################################################
 ############################################################################
 ############################################################################

@@ -31,9 +31,9 @@ library(lubridate) # Date Manipulation
 ###  in the years 2016 and 2017 and the other containing the 
 ###  inspections in the year 2018.
 
-inspec1617 <- read_ods('data/inspection/2016-2017_Inspection_Table.ods', 
+inspec1617 <- read_ods('data/raw_inspections/2016-2017_Inspection_Table.ods', 
                       skip = 1, col_names = T)
-inspec18 <- read_ods('data/inspection/2018_Inspection_Table.ods')
+inspec18 <- read_ods('data/raw_inspections/2018_Inspection_Table.ods')
 
 
 ##---------------------------------------------------------------
@@ -137,7 +137,7 @@ inspec <- inspec %>%
 ##                    Export to a .csv file                    --
 ##---------------------------------------------------------------
 
-write_csv(inspec, './data/inspection.csv')
+write_csv(inspec, './data/inspections.csv')
 
 
 ############################################################################
