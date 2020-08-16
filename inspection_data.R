@@ -8,9 +8,9 @@
 ############################################################################
 
 
-###  This .R file loads two files in ./files and does a series 
-###  of pre-processing including the hive and the apiary to obtain 
-###  the final data of inspections.             
+###  This .R file loads two files in ./data/inspection and does a 
+###  series of pre-processing including the hive and the apiary to 
+###  obtain the final data of inspections.             
 
 
 ##---------------------------------------------------------------
