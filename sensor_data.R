@@ -48,5 +48,27 @@ for (file in fileList){
 }
 
 
+##----------------------------------------------------------------
+##                       Summarize by day                       --
+##----------------------------------------------------------------
+
+###  We will summarize the data so that each hive contains only the 
+###  summary measures: Minimum, Median and Maximum for each day. 
+###  That is, given a specific day, obtain these summary measures 
+###  for each hive.
+
+sensors %>%
+  mutate(Date = date(`Date Time`),
+         TemperatureInt = (`Temperature [F]` - 32)*(5/9),
+         Weight = `Weight [lbs]`/2.2046,
+         Apiary = if_else(Apiary == 'The_Bee_Hive', 'The Bee Hive', Apiary)) %>%
+  group_by(Apiary, Hive, Date) %>%
+  summarize(across(TemperatureInt:Weight, 
+                   .fns = list(Min = ~min(.), 
+                               Median = ~median(.), 
+                               Max = ~max(.)),
+                   .names = "{fn}{col}"))
+
+
 ############################################################################
 ############################################################################
