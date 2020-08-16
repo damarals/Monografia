@@ -47,9 +47,19 @@ sensors <- read_csv('./data/sensors.csv')
 source('./get_climatic_data.R')  # Load Functions
 
 inspclimData <- inspections %>%
-  sample_n(2) %>%
   do(bind_cols(., data.frame(t(getClimateStatsData(date = .$Date, 
                                                    lat = .$Latitude, 
                                                    lng = .$Longitude)))))
 
+
+##---------------------------------------------------------------
+##        Combine inspections, climate and sensors data        --
+##---------------------------------------------------------------
+
+###  The code below performs an inner join between the climate data 
+###  and inspection dataset with the sensor data set, having as key 
+###  variables: Apiary, Hive and Data.
+
+inspclimsensData <- inspclimData %>%
+  inner_join(sensors, by = c('Date' = 'Date', 'Apiary' = 'Apiary', 'Hive' = 'Hive'))
 
