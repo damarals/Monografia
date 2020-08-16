@@ -52,6 +52,9 @@ getClimaticData <- function(date, lat, lng) {
 
 getStatsDaily <- function(rawData) {
   
+  WeatherStation <- c(rawData$data$nearest_area[[1]]$latitude,
+                      rawData$data$nearest_area[[1]]$longitude)
+  
   listDaily <- lapply(rawData$data$weather[[1]]$hourly, function(lt) {
     tibble(Temperature = lt$tempC, Windspeed = lt$windspeedKmph,
            Precipitation = lt$precipMM, Humidity = lt$humidity,
@@ -60,10 +63,14 @@ getStatsDaily <- function(rawData) {
   
   tibbleStats <- listDaily %>% 
     bind_rows() %>% 
-    mutate_all(.funs = funs(as.numeric(.))) %>%
+    mutate_all(.funs = list(~as.numeric(.))) %>%
     summarize(across(everything(), 
-                     .fns = list(Min = ~min(.), Median = ~median(.), Max = ~max(.)),
-                     .names = "{fn}{col}"))
+                     .fns = list(Min = ~min(.), 
+                                 Median = ~median(.), 
+                                 Max = ~max(.)),
+                     .names = "{fn}{col}")) %>%
+    mutate(StationLat = as.numeric(WeatherStation[1]), 
+           StationLng = as.numeric(WeatherStation[2]))
   
   return(tibbleStats)
 }
