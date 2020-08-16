@@ -63,3 +63,13 @@ inspclimData <- inspections %>%
 inspclimsensData <- inspclimData %>%
   inner_join(sensors, by = c('Date' = 'Date', 'Apiary' = 'Apiary', 'Hive' = 'Hive'))
 
+
+##---------------------------------------------------------------
+##                    Export to a .csv file                    --
+##---------------------------------------------------------------
+
+write_csv(inspclimsensData, './data/finaldata.csv')
+
+
+############################################################################
+############################################################################
