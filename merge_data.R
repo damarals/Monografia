@@ -58,10 +58,12 @@ inspclimData <- inspections %>%
 
 ###  The code below performs an inner join between the climate data 
 ###  and inspection dataset with the sensor data set, having as key 
-###  variables: Apiary, Hive and Data.
+###  variables: Apiary, Hive and Data. Afterwards, lines with 
+###  missing values are deleted
 
 inspclimsensData <- inspclimData %>%
-  inner_join(sensors, by = c('Date' = 'Date', 'Apiary' = 'Apiary', 'Hive' = 'Hive'))
+  inner_join(sensors, by = c('Date' = 'Date', 'Apiary' = 'Apiary', 'Hive' = 'Hive')) %>%
+  drop_na()
 
 
 ##---------------------------------------------------------------
