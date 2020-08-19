@@ -62,7 +62,9 @@ inspclimData <- inspections %>%
 ###  missing values are deleted
 
 inspclimsensData <- inspclimData %>%
-  inner_join(sensors, by = c('Date' = 'Date', 'Apiary' = 'Apiary', 'Hive' = 'Hive')) %>%
+  inner_join(sensors %>% 
+               mutate(Date = Date + day(1)), # get the previous day of measurement
+             by = c('Date' = 'Date', 'Apiary' = 'Apiary', 'Hive' = 'Hive')) %>%
   drop_na()
 
 
