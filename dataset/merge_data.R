@@ -47,7 +47,7 @@ sensors <- read_csv('./data/sensors.csv')
 source('./get_climatic_data.R')  # Load Functions
 
 inspclimData <- inspections %>%
-  do(bind_cols(., data.frame(t(getClimateStatsData(date = .$Date, 
+  do(bind_cols(., data.frame(t(getClimateStatsData(date = .$Date + days(1), 
                                                    lat = .$Latitude, 
                                                    lng = .$Longitude)))))
 
@@ -63,7 +63,7 @@ inspclimData <- inspections %>%
 
 inspclimsensData <- inspclimData %>%
   inner_join(sensors %>% 
-               mutate(Date = Date + day(1)), # get the previous day of measurement
+               mutate(Date = Date + days(1)), # get the previous day of measurement
              by = c('Date' = 'Date', 'Apiary' = 'Apiary', 'Hive' = 'Hive')) %>%
   drop_na()
 
