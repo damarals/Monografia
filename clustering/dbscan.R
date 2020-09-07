@@ -44,5 +44,16 @@ bee <- read_csv('../dataset/data/finaldata.csv')
 ###  form approaches for categorical and continuous variables.
 
 gower <- daisy(bee %>%
-                 select(), 
+                 mutate_at(.vars = vars(Season, Brood, Bees, Queen, Food, Stressors, Space),
+                           .funs = list(~as_factor(.))) %>%
+                 select(-c(Apiary, Hive, Latitude, Longitude, StationLat, StationLng)), 
                metric = "gower", stand = T)
+
+gower <- as.matrix(gower)
+
+parecidos <- bee[which(gower == min(gower[gower != min(gower)]), arr.ind = TRUE)[1, ], ]
+distintos <- bee[which(gower == max(gower[gower != max(gower)]), arr.ind = TRUE)[1, ], ]
+
+
+############################################################################
+############################################################################
