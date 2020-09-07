@@ -72,7 +72,7 @@ inspclimsensData <- inspclimData %>%
 ##                    Export to a .csv file                    --
 ##---------------------------------------------------------------
 
-write_csv(inspclimsensData, './data/finaldata.csv')
+write_csv(inspclimsensData, './data/mergedata.csv')
 
 
 ############################################################################
